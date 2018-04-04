@@ -1,0 +1,81 @@
+%!TeX program = xelatex
+
+\documentclass[crop=false]{standalone}
+
+% Load xcolor package and define the main colours for this document: dark colour for title and icons, a lighter shade for subtitles, and a green for the horizontal rule
+\usepackage{xcolor}
+\definecolor{mydark} {HTML}{2f3142}  % dark
+\definecolor{mylight}{HTML}{474a65}  % light dark
+\definecolor{mygreen}{HTML}{357f2d}  % green
+
+% Load fontspec and set the main and monospace fontsfonts
+\usepackage{fontspec}
+\setmainfont[Color=mydark,Numbers={}]{Fira Sans}
+%\setsansfont[Color=mydark]{Fira Sans}
+\setmonofont[Color=mydark]{Inconsolata}
+
+% Also define short commands for toggling text colour
+\newcommand{\cdark} {\addfontfeature{Color=mydark} }
+\newcommand{\clight}{\addfontfeature{Color=mylight}}
+\newcommand{\cgreen}{\addfontfeature{Color=mygreen}}
+
+% Change paper size and set margins
+%\usepackage[paperwidth=85mm,paperheight=55mm,tmargin=9mm,hscale=0.9]{geometry}  % Standard EU paper size
+\usepackage[paperwidth=85.60mm,paperheight=53.98mm,tmargin=9mm,hscale=0.9]{geometry}  % Credit card size
+
+% Load fontawesome icons
+\defaultfontfeatures{Path=/usr/local/texlive/2017/texmf-dist/fonts/opentype/public/fontawesome/}  % May be needed so XeTeX finds fontawesome; either edit this to point to the right place or install fontawesome to system fonts
+\usepackage{fontawesome}
+
+% Disable page numbering
+\pagestyle{empty}
+
+% Package that turns text into QR codes
+\usepackage{qrcode}
+
+% Define command to input contents of vcard.vcf 
+\makeatletter
+\everyeof{\noexpand}
+\edef\vcard{\@@input vcard.vcf }
+\makeatother
+
+% Contents
+\newcommand{\name}       {Philip J. Fry}
+\newcommand{\position}   {Delivery Boy}
+\newcommand{\institution}{Planet Express}
+
+\begin{document}
+
+%% Front side %%
+
+\begin{center}
+	{\Large \name}
+	
+	{\clight \position}
+	
+	\textcolor{mygreen}{\rule{0.5\textwidth}{1.2pt} \vspace{1mm}}  % Horizontal rule
+	
+	{\small\clight \textsc{\institution}}
+	
+	\vfill
+	
+	\renewcommand{\arraystretch}{1.25}
+	\footnotesize
+	\begin{tabular}{c@{\hspace{0.7em}}lc@{\hspace{0.7em}}l}
+		{\faPhone}    & {\clight +1~541~754~3010} & 
+		{\faGlobe}    & {\clight planetexpress.com} \\
+		{\faEnvelope} & {\clight fry@planetexpress.com} & 
+		{\faGithub}   & {\clight icweiner}
+	\end{tabular} 	
+\end{center}
+
+%% Back side %%
+\clearpage
+
+\newgeometry{margin=9.48mm}
+
+\begin{flushright}
+	{\Large\cdark info} \hspace{1.3cm} \qrcode[level=M,height=35mm]{\vcard}
+\end{flushright}
+
+\end{document}
